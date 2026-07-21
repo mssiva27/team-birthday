@@ -1,1 +1,316 @@
-~)^�+-zo�
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthdays</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#241522;
+    --plum-2:#2f1c2c;
+    --gold:#d4a73c;
+    --gold-soft:#e8c876;
+    --wax:#f3d9e0;
+    --cream:#f7f3ec;
+    --sage:#8a9c7a;
+    --line:rgba(247,243,236,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--plum);
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:56px 24px 80px;}
+
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(2.2rem,5vw,3.2rem);
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.75rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:12px;
+  }
+  .sub{color:rgba(247,243,236,0.65);margin:0 0 40px;font-size:1rem;line-height:1.5;}
+
+  /* Candle countdown - signature element */
+  .candle-card{
+    background:var(--plum-2);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:32px;
+    margin-bottom:48px;
+    display:flex;
+    gap:28px;
+    align-items:center;
+  }
+  .candle-visual{
+    width:56px;
+    height:150px;
+    flex-shrink:0;
+    position:relative;
+  }
+  .flame{
+    position:absolute;
+    top:-2px;left:50%;
+    transform:translateX(-50%);
+    width:14px;height:22px;
+    background:radial-gradient(circle at 50% 70%, #ffe27a 0%, var(--gold) 55%, transparent 80%);
+    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+    animation:flicker 2.4s ease-in-out infinite;
+  }
+  @keyframes flicker{
+    0%,100%{transform:translateX(-50%) scale(1) rotate(0deg);}
+    50%{transform:translateX(-50%) scale(1.06) rotate(-2deg);}
+  }
+  .wick{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:2px;height:8px;background:#6b5a3a;}
+  .wax-body{
+    position:absolute;
+    top:16px;left:8px;right:8px;bottom:0;
+    background:var(--wax);
+    border-radius:6px 6px 3px 3px;
+    overflow:hidden;
+  }
+  .wax-remaining{
+    position:absolute;bottom:0;left:0;right:0;
+    background:linear-gradient(180deg,#f8e5ea,var(--wax));
+    transition:height 0.6s ease;
+  }
+  .wax-burned{
+    position:absolute;top:0;left:0;right:0;
+    background:var(--plum-2);
+  }
+
+  .candle-info .eyebrow{margin-bottom:8px;}
+  .candle-info .name{
+    font-family:'Fraunces',serif;
+    font-size:1.6rem;
+    margin:0 0 4px;
+  }
+  .candle-info .days{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.95rem;
+    color:var(--gold-soft);
+  }
+
+  /* Form */
+  form{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:40px;
+    padding:20px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--plum-2);
+  }
+  input{
+    background:var(--plum);
+    border:1px solid var(--line);
+    color:var(--cream);
+    border-radius:8px;
+    padding:11px 14px;
+    font-family:'Inter',sans-serif;
+    font-size:0.95rem;
+    flex:1;
+    min-width:140px;
+  }
+  input::placeholder{color:rgba(247,243,236,0.4);}
+  input:focus, button:focus{outline:2px solid var(--gold-soft); outline-offset:2px;}
+  button{
+    background:var(--gold);
+    color:var(--plum);
+    border:none;
+    border-radius:8px;
+    padding:11px 20px;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  button:hover{background:var(--gold-soft);}
+
+  /* List */
+  .month-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.75rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--sage);
+    margin:28px 0 10px;
+  }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .row .who{font-weight:500;}
+  .row .when{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.85rem;
+    color:rgba(247,243,236,0.6);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .del{
+    background:none;border:none;color:rgba(247,243,236,0.35);
+    cursor:pointer;font-size:1rem;padding:2px 6px;border-radius:4px;
+  }
+  .del:hover{color:#e07a7a;background:rgba(224,122,122,0.1);}
+
+  .empty{
+    color:rgba(247,243,236,0.5);
+    font-size:0.9rem;
+    padding:24px 0;
+    text-align:center;
+    border:1px dashed var(--line);
+    border-radius:12px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Birthday tracker</div>
+  <h1>Who's next?</h1>
+  <p class="sub">Add the people you don't want to forget. The candle up top always burns down toward whoever's birthday is closest.</p>
+
+  <div class="candle-card" id="candleCard"></div>
+
+  <form id="addForm">
+    <input type="text" id="nameInput" placeholder="Name" required>
+    <input type="date" id="dateInput" required>
+    <button type="submit">Add birthday</button>
+  </form>
+
+  <div id="list"></div>
+</div>
+
+<script>
+// BEGIN_BIRTHDAYS
+  let birthdays = [
+ { name: "Ravikumar", date: "1973-01-01" },
+{ name: "Sriram 1st daughter", date: "2007-02-08" },
+
+ { name: "Ravi's son", date: "2007-06-22" },
+ { name: "Jay", date: "1976-06-15" },
+ { name: "Narayan", date: "1976-07-09" },
+ { name: "Jay's Son", date: "2007-07-18" },
+ { name: "Ravi's wife", date: "2007-07-23"},
+ { name: "Jay's Wife", date: "1976-08-20"},
+ { name: "Siva", date: "1976-08-26"},
+ { name: "Sriram's Wife", date: "1976-11-09" },
+ { name: "Sriram", date: "1976-12-13" },
+{ name: "Sriram 2nd daughter", date: "2007-12-18" }
+  ];
+// END_BIRTHDAYS
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  function nextOccurrence(dateStr){
+    const d = new Date(dateStr);
+    let next = new Date(today.getFullYear(), d.getMonth(), d.getDate());
+    if (next < today) next = new Date(today.getFullYear()+1, d.getMonth(), d.getDate());
+    return next;
+  }
+
+  function daysUntil(dateStr){
+    const next = nextOccurrence(dateStr);
+    return Math.round((next - today) / 86400000);
+  }
+
+  function monthName(dateStr){
+    return new Date(dateStr).toLocaleString('en-US', { month: 'long' });
+  }
+
+  function formatDate(dateStr){
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  function render(){
+    // Candle: find soonest
+    const candleCard = document.getElementById('candleCard');
+    if (birthdays.length === 0){
+      candleCard.innerHTML = `<div class="empty" style="border:none;">Add a birthday to light the candle.</div>`;
+    } else {
+      const soonest = [...birthdays].sort((a,b)=>daysUntil(a.date)-daysUntil(b.date))[0];
+      const days = daysUntil(soonest.date);
+      const pct = Math.max(4, 100 - (days/365)*100); // wax remaining %
+      candleCard.innerHTML = `
+        <div class="candle-visual">
+          <div class="flame"></div>
+          <div class="wick"></div>
+          <div class="wax-body">
+            <div class="wax-burned" style="height:${100-pct}%"></div>
+            <div class="wax-remaining" style="height:${pct}%"></div>
+          </div>
+        </div>
+        <div class="candle-info">
+          <div class="eyebrow">${days === 0 ? "Today" : "Up next"}</div>
+          <p class="name">${soonest.name}</p>
+          <p class="days">${days === 0 ? "🎂 It's today!" : days + " day" + (days===1?"":"s") + " away · " + formatDate(soonest.date)}</p>
+        </div>
+      `;
+    }
+
+    // List, grouped by month, sorted by proximity
+    const list = document.getElementById('list');
+    if (birthdays.length === 0){
+      list.innerHTML = `<div class="empty">No birthdays yet — add the first one above.</div>`;
+      return;
+    }
+    const sorted = [...birthdays].sort((a,b)=>daysUntil(a.date)-daysUntil(b.date));
+    let html = '';
+    let lastMonth = '';
+    sorted.forEach((b, idx) => {
+      const m = monthName(nextOccurrence(b.date));
+      if (m !== lastMonth){
+        html += `<div class="month-label">${m}</div>`;
+        lastMonth = m;
+      }
+      const realIdx = birthdays.indexOf(b);
+      html += `
+        <div class="row">
+          <span class="who">${b.name}</span>
+          <span class="when">${formatDate(b.date)} · ${daysUntil(b.date)}d
+            <button class="del" onclick="removeBirthday(${realIdx})" aria-label="Remove ${b.name}">✕</button>
+          </span>
+        </div>`;
+    });
+    list.innerHTML = html;
+  }
+
+  function removeBirthday(idx){
+    birthdays.splice(idx, 1);
+    render();
+  }
+
+  document.getElementById('addForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('nameInput').value.trim();
+    const date = document.getElementById('dateInput').value;
+    if (!name || !date) return;
+    birthdays.push({ name, date });
+    this.reset();
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>
